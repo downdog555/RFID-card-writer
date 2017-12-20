@@ -17,6 +17,11 @@ namespace RDIFCardAlterationProgram
         private SerialPort currentPort = null;
         private bool portFound;
 
+        public RDIFMainWindow()
+        {
+            InitializeComponent();
+        }
+
         private void SetComPort()
         {
             try
@@ -86,7 +91,7 @@ namespace RDIFCardAlterationProgram
                 //ComPort.name = returnMessage;
                 Console.WriteLine("We have data");
 
-                
+
 
                 if (returnMessage.Contains("HELLO FROM ARDUINO"))
                 {
@@ -109,12 +114,100 @@ namespace RDIFCardAlterationProgram
             SetComPort();
             if (currentPort != null)
             {
-                PortName.Text ="Port: " + currentPort.PortName;
+                PortName.Text = "Port: " + currentPort.PortName;
             }
             else
             {
                 PortName.Text = "Device is not found.";
             }
+        }
+
+        private void GetCardData()
+        {
+            try
+            {
+                //The below setting are for the Hello handshake
+                byte[] buffer = new byte[5];
+                //16 means message
+                buffer[0] = Convert.ToByte(16);
+                //128 is the number for checking if the ardunio exists
+                buffer[1] = Convert.ToByte(130);
+                buffer[2] = Convert.ToByte(0);
+                buffer[3] = Convert.ToByte(0);
+                //4 is end of message
+                buffer[4] = Convert.ToByte(4);
+
+                int intReturnASCII = 0;
+                char charReturnValue = (Char)intReturnASCII;
+                if (!currentPort.IsOpen)
+                {
+                    currentPort.Open();
+                }
+                //clean the buffer before getting another command
+                currentPort.DiscardOutBuffer();
+                currentPort.DiscardInBuffer();
+                currentPort.Write(buffer, 0, 5);
+                int dataCheck = currentPort.BytesToRead;
+                Thread.Sleep(1000);
+                while (dataCheck != currentPort.BytesToRead)
+                {
+
+                    dataCheck = currentPort.BytesToRead;
+                    Console.WriteLine("Sleeping....");
+                    Thread.Sleep(1000);
+                }
+
+                
+                    int count = currentPort.BytesToRead;
+                    string returnMessage = "";
+                    while (count > 0)
+                    {
+
+                    intReturnASCII = currentPort.ReadByte();
+                    //returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                        count--;
+                    }
+                    Console.WriteLine(returnMessage);
+                //Console.WriteLine(GetCardManufactureKey(returnMessage));
+                //CardKey.Text = GetCardManufactureKey(returnMessage);
+            
+                
+
+
+
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+        private void getCard_Click(object sender, EventArgs e)
+        {
+            GetCardData();
+        }
+
+        private string GetCardManufactureKey(string data)
+        {
+            string key;
+            string[] dataArray = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            //we then need to get the three bits of data
+            string keyPart1 = dataArray[0].Split(':')[1];
+            string keyPart2 = dataArray[1].Split(':')[1];
+            string keyPart3 = dataArray[2].Split(':')[1];
+            Console.WriteLine(dataArray.Length);
+            
+            //we use the card details that are dumped splitting on : should give an array of length 6 so we need every other value
+            string keyData = keyPart1+keyPart2+keyPart3;
+            byte[] tempKey = System.Text.ASCIIEncoding.ASCII.GetBytes(keyData);
+            key = System.Convert.ToBase64String(tempKey);
+
+
+
+            return key;
+
         }
     }
 }
