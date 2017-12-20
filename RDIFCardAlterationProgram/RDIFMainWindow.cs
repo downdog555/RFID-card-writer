@@ -144,8 +144,8 @@ namespace RDIFCardAlterationProgram
                     currentPort.Open();
                 }
                 //clean the buffer before getting another command
-                currentPort.DiscardOutBuffer();
-                currentPort.DiscardInBuffer();
+                //currentPort.DiscardOutBuffer();
+                //currentPort.DiscardInBuffer();
                 currentPort.Write(buffer, 0, 5);
                 int dataCheck = currentPort.BytesToRead;
                 Thread.Sleep(1000);
