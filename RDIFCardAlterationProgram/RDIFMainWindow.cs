@@ -144,8 +144,8 @@ namespace RDIFCardAlterationProgram
                     currentPort.Open();
                 }
                 //clean the buffer before getting another command
-                //currentPort.DiscardOutBuffer();
-                //currentPort.DiscardInBuffer();
+                currentPort.DiscardOutBuffer();
+                currentPort.DiscardInBuffer();
                 currentPort.Write(buffer, 0, 5);
                 int dataCheck = currentPort.BytesToRead;
                 Thread.Sleep(1000);
@@ -163,16 +163,18 @@ namespace RDIFCardAlterationProgram
                     while (count > 0)
                     {
 
-                    intReturnASCII = currentPort.ReadByte();
-                    //returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
-                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                        intReturnASCII = currentPort.ReadByte();
+                        
+                        returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
                         count--;
                     }
-                    Console.WriteLine(returnMessage);
-                //Console.WriteLine(GetCardManufactureKey(returnMessage));
-                //CardKey.Text = GetCardManufactureKey(returnMessage);
-            
-                
+                    //Console.WriteLine(returnMessage);
+                //Console.WriteLine(returnMessage.Split(':')[1]);
+                string uid = returnMessage.Split(':')[1];
+                string hashedByBase = returnMessage.Split(':')[2];
+                manData.Text = hashedByBase;
+
+
 
 
 
@@ -188,26 +190,80 @@ namespace RDIFCardAlterationProgram
             GetCardData();
         }
 
-        private string GetCardManufactureKey(string data)
+        private void GetDataButton_Click(object sender, EventArgs e)
         {
-            string key;
-            string[] dataArray = data.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+            //we need some unique data such as the timecode
+            long temp = DateTime.Now.ToBinary();
+            dataWriteBox.Text = temp.ToString();
+        }
 
-            //we then need to get the three bits of data
-            string keyPart1 = dataArray[0].Split(':')[1];
-            string keyPart2 = dataArray[1].Split(':')[1];
-            string keyPart3 = dataArray[2].Split(':')[1];
-            Console.WriteLine(dataArray.Length);
+        private void DataWrite_Click(object sender, EventArgs e)
+        {
+            string data = dataWriteBox.Text;
+            long dataLong = Convert.ToInt64(dataWriteBox.Text);
             
-            //we use the card details that are dumped splitting on : should give an array of length 6 so we need every other value
-            string keyData = keyPart1+keyPart2+keyPart3;
-            byte[] tempKey = System.Text.ASCIIEncoding.ASCII.GetBytes(keyData);
-            key = System.Convert.ToBase64String(tempKey);
+            Console.WriteLine(dataLong);
+            try
+            {
+                //The below setting are for the Hello handshake
+                byte[] buffer = new byte[4];
+                //16 means message
+                buffer[0] = Convert.ToByte(16);
+                //128 is the number for checking if the ardunio exists
+                buffer[1] = Convert.ToByte(131);
+                buffer[2] = Convert.ToByte(0);
+                buffer[3] = Convert.ToByte(0);
+               
+
+                //4 is end of message
+                
+
+                int intReturnASCII = 0;
+                char charReturnValue = (Char)intReturnASCII;
+                if (!currentPort.IsOpen)
+                {
+                    currentPort.Open();
+                }
+                //clean the buffer before getting another command
+                currentPort.DiscardOutBuffer();
+                currentPort.DiscardInBuffer();
+                currentPort.Write(buffer, 0, 4);
+                byte[] writeData = BitConverter.GetBytes(dataLong);
+                Console.WriteLine("byte array length: "+writeData.Length);
+                currentPort.Write(writeData, 0, 8);
+                byte[] temp = new byte[1];
+                temp[0] = Convert.ToByte(4);
+                currentPort.Write(temp, 0,1);
+
+                int dataCheck = currentPort.BytesToRead;
+                Thread.Sleep(1000);
+                while (dataCheck != currentPort.BytesToRead)
+                {
+
+                    dataCheck = currentPort.BytesToRead;
+                    Console.WriteLine("Sleeping....");
+                    Thread.Sleep(1000);
+                }
 
 
+                int count = currentPort.BytesToRead;
+                string returnMessage = "";
+                while (count > 0)
+                {
 
-            return key;
+                    intReturnASCII = currentPort.ReadByte();
 
+                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                    count--;
+                }
+                Console.WriteLine(returnMessage);
+
+
+            }
+            catch (Exception e1)
+            {
+
+            }
         }
     }
 }

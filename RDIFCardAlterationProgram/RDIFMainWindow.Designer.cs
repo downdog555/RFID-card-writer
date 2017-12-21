@@ -32,7 +32,11 @@
             this.PortName = new System.Windows.Forms.Label();
             this.getCard = new System.Windows.Forms.Button();
             this.CardKeyDetails = new System.Windows.Forms.Label();
-            this.CardKey = new System.Windows.Forms.Label();
+            this.manData = new System.Windows.Forms.TextBox();
+            this.dataWriteLabel = new System.Windows.Forms.Label();
+            this.dataWriteBox = new System.Windows.Forms.TextBox();
+            this.DataWrite = new System.Windows.Forms.Button();
+            this.GetDataButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GetComPort
@@ -73,21 +77,59 @@
             this.CardKeyDetails.TabIndex = 3;
             this.CardKeyDetails.Text = "Card Key:";
             // 
-            // CardKey
+            // manData
             // 
-            this.CardKey.AutoSize = true;
-            this.CardKey.Location = new System.Drawing.Point(72, 126);
-            this.CardKey.Name = "CardKey";
-            this.CardKey.Size = new System.Drawing.Size(53, 13);
-            this.CardKey.TabIndex = 4;
-            this.CardKey.Text = "Card Key:";
+            this.manData.Location = new System.Drawing.Point(121, 119);
+            this.manData.Name = "manData";
+            this.manData.Size = new System.Drawing.Size(125, 20);
+            this.manData.TabIndex = 4;
+            // 
+            // dataWriteLabel
+            // 
+            this.dataWriteLabel.AutoSize = true;
+            this.dataWriteLabel.Location = new System.Drawing.Point(13, 150);
+            this.dataWriteLabel.Name = "dataWriteLabel";
+            this.dataWriteLabel.Size = new System.Drawing.Size(102, 13);
+            this.dataWriteLabel.TabIndex = 5;
+            this.dataWriteLabel.Text = "Data To Be Written:";
+            // 
+            // dataWriteBox
+            // 
+            this.dataWriteBox.Location = new System.Drawing.Point(121, 147);
+            this.dataWriteBox.Name = "dataWriteBox";
+            this.dataWriteBox.Size = new System.Drawing.Size(125, 20);
+            this.dataWriteBox.TabIndex = 6;
+            // 
+            // DataWrite
+            // 
+            this.DataWrite.Location = new System.Drawing.Point(16, 214);
+            this.DataWrite.Name = "DataWrite";
+            this.DataWrite.Size = new System.Drawing.Size(223, 23);
+            this.DataWrite.TabIndex = 7;
+            this.DataWrite.Text = "Write Data To Card";
+            this.DataWrite.UseVisualStyleBackColor = true;
+            this.DataWrite.Click += new System.EventHandler(this.DataWrite_Click);
+            // 
+            // GetDataButton
+            // 
+            this.GetDataButton.Location = new System.Drawing.Point(16, 173);
+            this.GetDataButton.Name = "GetDataButton";
+            this.GetDataButton.Size = new System.Drawing.Size(223, 23);
+            this.GetDataButton.TabIndex = 8;
+            this.GetDataButton.Text = "Get Data to Be Written To Card";
+            this.GetDataButton.UseVisualStyleBackColor = true;
+            this.GetDataButton.Click += new System.EventHandler(this.GetDataButton_Click);
             // 
             // RDIFMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.CardKey);
+            this.Controls.Add(this.GetDataButton);
+            this.Controls.Add(this.DataWrite);
+            this.Controls.Add(this.dataWriteBox);
+            this.Controls.Add(this.dataWriteLabel);
+            this.Controls.Add(this.manData);
             this.Controls.Add(this.CardKeyDetails);
             this.Controls.Add(this.getCard);
             this.Controls.Add(this.PortName);
@@ -105,7 +147,11 @@
         private System.Windows.Forms.Label PortName;
         private System.Windows.Forms.Button getCard;
         private System.Windows.Forms.Label CardKeyDetails;
-        private System.Windows.Forms.Label CardKey;
+        private System.Windows.Forms.TextBox manData;
+        private System.Windows.Forms.Label dataWriteLabel;
+        private System.Windows.Forms.TextBox dataWriteBox;
+        private System.Windows.Forms.Button DataWrite;
+        private System.Windows.Forms.Button GetDataButton;
     }
 }
 
