@@ -37,6 +37,8 @@
             this.dataWriteBox = new System.Windows.Forms.TextBox();
             this.DataWrite = new System.Windows.Forms.Button();
             this.GetDataButton = new System.Windows.Forms.Button();
+            this.dataRead = new System.Windows.Forms.Button();
+            this.DumpData = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GetComPort
@@ -120,11 +122,33 @@
             this.GetDataButton.UseVisualStyleBackColor = true;
             this.GetDataButton.Click += new System.EventHandler(this.GetDataButton_Click);
             // 
+            // dataRead
+            // 
+            this.dataRead.Location = new System.Drawing.Point(16, 243);
+            this.dataRead.Name = "dataRead";
+            this.dataRead.Size = new System.Drawing.Size(223, 23);
+            this.dataRead.TabIndex = 9;
+            this.dataRead.Text = "Read Assinged Data";
+            this.dataRead.UseVisualStyleBackColor = true;
+            this.dataRead.Click += new System.EventHandler(this.dataRead_Click);
+            // 
+            // DumpData
+            // 
+            this.DumpData.Location = new System.Drawing.Point(16, 289);
+            this.DumpData.Name = "DumpData";
+            this.DumpData.Size = new System.Drawing.Size(75, 23);
+            this.DumpData.TabIndex = 10;
+            this.DumpData.Text = "Dump Data:";
+            this.DumpData.UseVisualStyleBackColor = true;
+            this.DumpData.Click += new System.EventHandler(this.DumpData_Click);
+            // 
             // RDIFMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.ClientSize = new System.Drawing.Size(284, 347);
+            this.Controls.Add(this.DumpData);
+            this.Controls.Add(this.dataRead);
             this.Controls.Add(this.GetDataButton);
             this.Controls.Add(this.DataWrite);
             this.Controls.Add(this.dataWriteBox);
@@ -152,6 +176,8 @@
         private System.Windows.Forms.TextBox dataWriteBox;
         private System.Windows.Forms.Button DataWrite;
         private System.Windows.Forms.Button GetDataButton;
+        private System.Windows.Forms.Button dataRead;
+        private System.Windows.Forms.Button DumpData;
     }
 }
 

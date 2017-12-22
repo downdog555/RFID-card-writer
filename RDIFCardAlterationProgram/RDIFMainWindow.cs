@@ -201,7 +201,9 @@ namespace RDIFCardAlterationProgram
         {
             string data = dataWriteBox.Text;
             long dataLong = Convert.ToInt64(dataWriteBox.Text);
-            
+            //clean the buffer before getting another command
+            currentPort.DiscardOutBuffer();
+            currentPort.DiscardInBuffer();
             Console.WriteLine(dataLong);
             try
             {
@@ -228,9 +230,12 @@ namespace RDIFCardAlterationProgram
                 currentPort.DiscardOutBuffer();
                 currentPort.DiscardInBuffer();
                 currentPort.Write(buffer, 0, 4);
-                byte[] writeData = BitConverter.GetBytes(dataLong);
+                //we create base64 of datalong
+                string dataBase64 = Convert.ToBase64String(BitConverter.GetBytes(dataLong));
+                Console.WriteLine(dataBase64);
+                byte[] writeData = Encoding.ASCII.GetBytes(dataBase64);
                 Console.WriteLine("byte array length: "+writeData.Length);
-                currentPort.Write(writeData, 0, 8);
+                currentPort.Write(writeData, 0, writeData.Length);
                 byte[] temp = new byte[1];
                 temp[0] = Convert.ToByte(4);
                 currentPort.Write(temp, 0,1);
@@ -257,6 +262,125 @@ namespace RDIFCardAlterationProgram
                     count--;
                 }
                 Console.WriteLine(returnMessage);
+
+
+            }
+            catch (Exception e1)
+            {
+
+            }
+        }
+
+        private void dataRead_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+               
+                byte[] buffer = new byte[5];
+                //16 means message
+                buffer[0] = Convert.ToByte(16);
+                buffer[1] = Convert.ToByte(132);
+                buffer[2] = Convert.ToByte(0);
+                buffer[3] = Convert.ToByte(0);
+                //4 is end of message
+                buffer[4] = Convert.ToByte(4);
+
+                int intReturnASCII = 0;
+                char charReturnValue = (Char)intReturnASCII;
+                if (!currentPort.IsOpen)
+                {
+                    currentPort.Open();
+                }
+                //clean the buffer before getting another command
+                currentPort.DiscardOutBuffer();
+                currentPort.DiscardInBuffer();
+                currentPort.Write(buffer, 0, 5);
+                int dataCheck = currentPort.BytesToRead;
+                Thread.Sleep(1000);
+                while (dataCheck != currentPort.BytesToRead)
+                {
+
+                    dataCheck = currentPort.BytesToRead;
+                    Console.WriteLine("Sleeping....");
+                    Thread.Sleep(1000);
+                }
+                int count = currentPort.BytesToRead;
+                string returnMessage = "";
+                while (count > 0)
+                {
+
+                    intReturnASCII = currentPort.ReadByte();
+
+                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                    count--;
+                }
+                Console.WriteLine(returnMessage);
+
+
+
+
+
+
+
+            }
+            catch (Exception e1)
+            {
+
+            }
+        }
+
+        private void DumpData_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //The below setting are for the Hello handshake
+                byte[] buffer = new byte[5];
+                //16 means message
+                buffer[0] = Convert.ToByte(16);
+                //128 is the number for checking if the ardunio exists
+                buffer[1] = Convert.ToByte(100);
+                buffer[2] = Convert.ToByte(0);
+                buffer[3] = Convert.ToByte(0);
+                //4 is end of message
+                buffer[4] = Convert.ToByte(4);
+
+                int intReturnASCII = 0;
+                char charReturnValue = (Char)intReturnASCII;
+                if (!currentPort.IsOpen)
+                {
+                    currentPort.Open();
+                }
+                //clean the buffer before getting another command
+                currentPort.DiscardOutBuffer();
+                currentPort.DiscardInBuffer();
+                currentPort.Write(buffer, 0, 5);
+                int dataCheck = currentPort.BytesToRead;
+                Thread.Sleep(1000);
+                while (dataCheck != currentPort.BytesToRead)
+                {
+
+                    dataCheck = currentPort.BytesToRead;
+                    Console.WriteLine("Sleeping....");
+                    Thread.Sleep(1000);
+                }
+
+
+                int count = currentPort.BytesToRead;
+                string returnMessage = "";
+                while (count > 0)
+                {
+
+                    intReturnASCII = currentPort.ReadByte();
+
+                    returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
+                    count--;
+                }
+                Console.WriteLine(returnMessage);
+                
+
+
+
 
 
             }
