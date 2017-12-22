@@ -301,6 +301,7 @@ namespace RDIFCardAlterationProgram
                 while (dataCheck != currentPort.BytesToRead)
                 {
 
+
                     dataCheck = currentPort.BytesToRead;
                     Console.WriteLine("Sleeping....");
                     Thread.Sleep(1000);
