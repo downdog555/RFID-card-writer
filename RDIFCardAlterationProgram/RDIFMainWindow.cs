@@ -148,7 +148,7 @@ namespace RDIFCardAlterationProgram
                 currentPort.DiscardInBuffer();
                 currentPort.Write(buffer, 0, 5);
                 int dataCheck = currentPort.BytesToRead;
-                Thread.Sleep(1000);
+                Thread.Sleep(1500);
                 while (dataCheck != currentPort.BytesToRead)
                 {
 
@@ -236,9 +236,10 @@ namespace RDIFCardAlterationProgram
                 byte[] writeData = Encoding.ASCII.GetBytes(dataBase64);
                 Console.WriteLine("byte array length: "+writeData.Length);
                 currentPort.Write(writeData, 0, writeData.Length);
-                byte[] temp = new byte[1];
-                temp[0] = Convert.ToByte(4);
-                currentPort.Write(temp, 0,1);
+                byte[] temp = new byte[2];
+                temp[0] = Convert.ToByte(Convert.ToInt32(accessLevel.Text));
+                temp[1] = Convert.ToByte(4);
+                currentPort.Write(temp, 0,2);
 
                 int dataCheck = currentPort.BytesToRead;
                 Thread.Sleep(1000);
@@ -261,6 +262,7 @@ namespace RDIFCardAlterationProgram
                     returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
                     count--;
                 }
+                Console.WriteLine("We have data");
                 Console.WriteLine(returnMessage);
 
 
@@ -281,6 +283,7 @@ namespace RDIFCardAlterationProgram
                 //16 means message
                 buffer[0] = Convert.ToByte(16);
                 buffer[1] = Convert.ToByte(132);
+                buffer[2] = Convert.ToByte(0);
                 buffer[2] = Convert.ToByte(0);
                 buffer[3] = Convert.ToByte(0);
                 //4 is end of message
@@ -308,15 +311,22 @@ namespace RDIFCardAlterationProgram
                 }
                 int count = currentPort.BytesToRead;
                 string returnMessage = "";
-                while (count > 0)
+                byte[] temp = new byte[currentPort.BytesToRead];
+                currentPort.Read(temp, 0, currentPort.BytesToRead);
+                int accessLevel = temp[count - 1];
+
+                foreach(byte b in temp)
                 {
 
-                    intReturnASCII = currentPort.ReadByte();
+                    intReturnASCII = b;
 
                     returnMessage = returnMessage + Convert.ToChar(intReturnASCII);
                     count--;
                 }
+                
+
                 Console.WriteLine(returnMessage);
+                Console.WriteLine(accessLevel);
 
 
 

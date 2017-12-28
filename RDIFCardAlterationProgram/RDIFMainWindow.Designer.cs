@@ -39,6 +39,8 @@
             this.GetDataButton = new System.Windows.Forms.Button();
             this.dataRead = new System.Windows.Forms.Button();
             this.DumpData = new System.Windows.Forms.Button();
+            this.AccessLevelLabel = new System.Windows.Forms.Label();
+            this.accessLevel = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // GetComPort
@@ -104,7 +106,7 @@
             // 
             // DataWrite
             // 
-            this.DataWrite.Location = new System.Drawing.Point(16, 214);
+            this.DataWrite.Location = new System.Drawing.Point(16, 231);
             this.DataWrite.Name = "DataWrite";
             this.DataWrite.Size = new System.Drawing.Size(223, 23);
             this.DataWrite.TabIndex = 7;
@@ -114,7 +116,7 @@
             // 
             // GetDataButton
             // 
-            this.GetDataButton.Location = new System.Drawing.Point(16, 173);
+            this.GetDataButton.Location = new System.Drawing.Point(16, 202);
             this.GetDataButton.Name = "GetDataButton";
             this.GetDataButton.Size = new System.Drawing.Size(223, 23);
             this.GetDataButton.TabIndex = 8;
@@ -124,7 +126,7 @@
             // 
             // dataRead
             // 
-            this.dataRead.Location = new System.Drawing.Point(16, 243);
+            this.dataRead.Location = new System.Drawing.Point(16, 260);
             this.dataRead.Name = "dataRead";
             this.dataRead.Size = new System.Drawing.Size(223, 23);
             this.dataRead.TabIndex = 9;
@@ -142,11 +144,29 @@
             this.DumpData.UseVisualStyleBackColor = true;
             this.DumpData.Click += new System.EventHandler(this.DumpData_Click);
             // 
+            // AccessLevelLabel
+            // 
+            this.AccessLevelLabel.AutoSize = true;
+            this.AccessLevelLabel.Location = new System.Drawing.Point(13, 170);
+            this.AccessLevelLabel.Name = "AccessLevelLabel";
+            this.AccessLevelLabel.Size = new System.Drawing.Size(74, 13);
+            this.AccessLevelLabel.TabIndex = 11;
+            this.AccessLevelLabel.Text = "Access Level:";
+            // 
+            // accessLevel
+            // 
+            this.accessLevel.Location = new System.Drawing.Point(121, 170);
+            this.accessLevel.Name = "accessLevel";
+            this.accessLevel.Size = new System.Drawing.Size(125, 20);
+            this.accessLevel.TabIndex = 12;
+            // 
             // RDIFMainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 347);
+            this.Controls.Add(this.accessLevel);
+            this.Controls.Add(this.AccessLevelLabel);
             this.Controls.Add(this.DumpData);
             this.Controls.Add(this.dataRead);
             this.Controls.Add(this.GetDataButton);
@@ -178,6 +198,8 @@
         private System.Windows.Forms.Button GetDataButton;
         private System.Windows.Forms.Button dataRead;
         private System.Windows.Forms.Button DumpData;
+        private System.Windows.Forms.Label AccessLevelLabel;
+        private System.Windows.Forms.TextBox accessLevel;
     }
 }
 
