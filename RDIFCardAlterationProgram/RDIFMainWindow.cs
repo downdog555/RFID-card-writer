@@ -232,6 +232,7 @@ namespace RDIFCardAlterationProgram
                 currentPort.Write(buffer, 0, 4);
                 //we create base64 of datalong
                 string dataBase64 = Convert.ToBase64String(BitConverter.GetBytes(dataLong));
+                dataAsigned.Text = dataBase64;
                 Console.WriteLine(dataBase64);
                 byte[] writeData = Encoding.ASCII.GetBytes(dataBase64);
                 Console.WriteLine("byte array length: "+writeData.Length);
