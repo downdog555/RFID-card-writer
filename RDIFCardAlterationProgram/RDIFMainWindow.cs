@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
 using System.Threading;
-
+/// <summary>
+/// Scheme used to talk with arduino from here
+/// https://playground.arduino.cc/Interfacing/Csharp
+/// as well as
+/// https://playground.arduino.cc/Csharp/SerialCommsCSharp
+/// </summary>
 namespace RDIFCardAlterationProgram
 {
     public partial class RDIFMainWindow : Form
